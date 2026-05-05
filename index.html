@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Smart Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-white flex flex-col items-center justify-center min-h-screen p-4">
+    
+    <!-- ส่วนหัว -->
+    <h1 class="text-3xl font-bold text-blue-400 mb-8 tracking-widest uppercase">AI Vision Dashboard</h1>
+
+    <div class="flex flex-col md:flex-row gap-8 items-center w-full max-w-5xl">
+        
+        <!-- จอแสดงผลวิดีโอ -->
+        <div class="flex-1 bg-slate-900 p-2 rounded-2xl border border-slate-700 shadow-2xl relative">
+            <div class="absolute top-4 left-4 bg-red-600 px-2 py-1 rounded text-xs font-bold animate-pulse">LIVE</div>
+            <!-- แท็ก img นี้แหละที่จะเอาไว้แสดงภาพ -->
+            <img id="video-feed" class="w-full rounded-xl" src="https://via.placeholder.com/640x480?text=Waiting+for+Camera..." alt="Live Feed" />
+        </div>
+
+        <!-- แผงตัวเลขสถิติ -->
+        <div class="w-full md:w-80 bg-slate-800 p-8 rounded-3xl shadow-2xl border border-slate-700 text-center flex flex-col justify-center h-full">
+            <p class="text-slate-400 font-semibold mb-2 uppercase tracking-wide">People in Frame</p>
+            <div class="text-8xl font-black mb-6 text-white" id="counter">0</div>
+            <div id="status" class="py-3 px-6 rounded-full text-lg font-bold bg-green-500 shadow-lg shadow-green-500/30">
+                SYSTEM ONLINE
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const ws = new WebSocket("ws://127.0.0.1:8000/ws/analytics");
+        const counterDisplay = document.getElementById("counter");
+        const statusDisplay = document.getElementById("status");
+        const videoFeed = document.getElementById("video-feed"); // ดึงตัวแปรจอภาพมา
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            
+            // 1. อัปเดตตัวเลขและสถานะ
+            counterDisplay.innerText = data.count;
+            
+            if (data.count >= 5) {
+                statusDisplay.innerText = "CROWDED WARNING";
+                statusDisplay.className = "py-3 px-6 rounded-full text-lg font-bold bg-red-500 shadow-lg shadow-red-500/50 animate-pulse";
+            } else {
+                statusDisplay.innerText = "NORMAL";
+                statusDisplay.className = "py-3 px-6 rounded-full text-lg font-bold bg-green-500 shadow-lg shadow-green-500/30";
+            }
+
+            // 2. อัปเดตภาพวิดีโอ! (เอาโค้ด Base64 มายัดใส่ src ของรูป)
+            if (data.image) {
+                videoFeed.src = "data:image/jpeg;base64," + data.image;
+            }
+        };
+    </script>
+</body>
+</html>
