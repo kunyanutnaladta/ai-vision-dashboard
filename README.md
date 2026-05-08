@@ -1,6 +1,6 @@
 # 🚀 My AI Dashboard
 
-![AI Dashboard Preview](https://via.placeholder.com/800x400.png?text=AI+Dashboard+Preview)
+<img width="1919" height="1124" alt="Screenshot 2026-05-05 165842" src="https://github.com/user-attachments/assets/e0939af0-8c06-4fd0-b09b-ae0afa337e7e" />
 
 ## 📌 Overview
 
@@ -110,8 +110,4 @@ http://localhost:5000
 ## 📄 License
 
 MIT License
-
----
-
-<img width="1919" height="1124" alt="Screenshot 2026-05-05 165842" src="https://github.com/user-attachments/assets/e0939af0-8c06-4fd0-b09b-ae0afa337e7e" />
 
